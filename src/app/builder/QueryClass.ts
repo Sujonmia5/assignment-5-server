@@ -26,10 +26,24 @@ class QueryClass<T> {
   }
 
   // method Filter
-  filter(exCludeFields: string[]) {
+  fieldFilter(exCludeFields: string[]) {
     const queryObj = { ...this.query };
     exCludeFields.forEach((field) => delete queryObj[field]);
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+    return this;
+  }
+
+  // method capacity and price filtering
+  filter() {
+    const capacity = parseInt(this.query?.capacity as string) || 0;
+    if (capacity >= 50) {
+      this.modelQuery = this.modelQuery.find({ capacity: { $gte: capacity } });
+    }
+    if (capacity >= 1) {
+      this.modelQuery = this.modelQuery.find({
+        capacity: { $gte: capacity - 10, $lte: capacity },
+      });
+    }
     return this;
   }
 
@@ -48,11 +62,7 @@ class QueryClass<T> {
     const sort = {
       pricePerSlot: query as SortOrder,
     };
-
-    if (sort) {
-      this.modelQuery = this.modelQuery.sort(sort);
-    }
-
+    this.modelQuery = this.modelQuery.sort(sort);
     return this;
   }
 

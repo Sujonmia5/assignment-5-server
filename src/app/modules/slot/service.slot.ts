@@ -26,9 +26,10 @@ const createSlotIntoDB = async (payload: TSlot, user: JwtPayload) => {
 const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
   const exCludeFields = ["date"];
 
-  const slotQuery = new QueryClass(MSlot.find().populate("room"), query).filter(
-    exCludeFields
-  );
+  const slotQuery = new QueryClass(
+    MSlot.find().populate("room"),
+    query
+  ).fieldFilter(exCludeFields);
   const result = await slotQuery.modelQuery;
   return result;
 };

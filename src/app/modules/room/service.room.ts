@@ -17,12 +17,13 @@ const createRoomIntoDB = async (payload: TRoom, user: JwtPayload) => {
 };
 
 const getAllRoomFromDB = async (query: Record<string, unknown>) => {
-  const exCludeFields = ["search", "limit", "page", "sort"];
+  const exCludeFields = ["search", "limit", "page", "sort", "capacity"];
   const searchAbleField = ["name", "amenities"];
 
   const roomQuery = new QueryClass(MRoom.find(), query)
     .search(searchAbleField)
-    .filter(exCludeFields)
+    .fieldFilter(exCludeFields)
+    .filter()
     .field()
     .paginate()
     .sort();
