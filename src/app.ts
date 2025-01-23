@@ -6,8 +6,13 @@ import notFound from "./app/middleware/notFound";
 
 const app = express();
 
-app.use(cors({ origin: "https://assignment-5-clinet.vercel.app" }));
 app.use(express.json());
+app.use(
+  cors({
+    origin: "https://silver-narwhal-c934ad.netlify.app",
+    credentials: true,
+  })
+);
 
 app.use("/api", router);
 
